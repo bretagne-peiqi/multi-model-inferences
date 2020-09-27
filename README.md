@@ -8,7 +8,7 @@ However, resouce-constraint and lack of good schedule policy limited the develop
 The idea of this project is to coordinate models and AICores in parallel with config options for priority.
 
 #Architecture and Workflow
- ![image](https://github.com/Bretagne-Peiqi/multi-model-profiling/raw/master/images/workflow.png)
+ ![image](https://github.com/bretagne-peiqi/multi-model-inferences/tree/master/images/workflow.png)
 
 
 #How to Use
