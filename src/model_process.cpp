@@ -72,8 +72,9 @@ Result ModelProcess::LoadModelFromFileWithMem(const char *modelPath) {
         ERROR_LOG("load model from file failed, model file is %s", modelPath);
         return FAILED;
     }
-
-    loadFlag_ = true;
+    
+    // peiqi, disable the flag for multi-model
+    loadFlag_ = false;
     INFO_LOG("load model %s success", modelPath);
     return SUCCESS;
 }

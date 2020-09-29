@@ -1,5 +1,5 @@
 /**
-* Copyright 2020 Huawei Technologies Co., Ltd
+* Copyright 2020 Zhejiang Lab
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 * limitations under the License.
 
 * File main.cpp
-* Description: dvpp sample main func
+* Description: multi-model main func
 */
 
 #include <iostream>
@@ -28,7 +28,7 @@ using namespace std;
 namespace {
 uint32_t kModelWidth = 416;
 uint32_t kModelHeight = 416;
-const char* kModelPath = "../model/yolov3.om";
+const char* kModelPath = "../model/";
 const char* kAppConf = "../script/object_detection.conf";
 }
 
@@ -38,8 +38,14 @@ int main(int argc, char *argv[]) {
         ERROR_LOG("Please input: ./main <image_dir>");
         return FAILED;
     }
-    //Instantiate the target detection class with the parameters of the classification model path and the required width and height of the model input
-    ObjectDetect detect(kModelPath, kModelWidth, kModelHeight);
+
+    std::vector<std::string> fv;
+    Utils::GetPathFiles(kModelPath, fv);
+    //all models init
+    for(auto it = fv.begin(); it != fv.end(); ++it) {
+
+        //Instantiate the target detection class with the parameters of the classification model path and the required width and height of the model input
+        ObjectDetect detect(it, kModelWidth, kModelHeight);
     //Initializes the ACL resource for categorical reasoning, loads the model and requests the memory used for reasoning input
     Result ret = detect.Init();
     if (ret != SUCCESS) {
@@ -56,7 +62,7 @@ int main(int argc, char *argv[]) {
         return FAILED;
     }
     //Frame by frame reasoning
-    while(1) {
+    while (1) {
         //Read a frame of an image
         cv::Mat frame;
         if (!capture.read(frame)) {
@@ -83,6 +89,8 @@ int main(int argc, char *argv[]) {
             ERROR_LOG("Process model inference output data failed");
             return FAILED;
         }
+    }
+    //end of pipeline processing;
     }
 
     INFO_LOG("Execute video object detection success");

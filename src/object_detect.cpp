@@ -72,7 +72,21 @@ Result ObjectDetect::InitResource() {
     }
     INFO_LOG("Acl init success");
 
+    std:int devcnt=0
+    aclError ret = aclrtGetDeviceCount(devcnt);
+    if (ret != ACL_ERROR_NONE) {
+        ERROR_LOG("Acl get device count failed");
+        return FAILED;
+    }
+
+    // set flag deviceId
     // open device
+    if (deviceId_ < devcnt) {
+        deviceId_++;
+    }
+    else {
+        deviceId_ = 0;
+    }
     ret = aclrtSetDevice(deviceId_);
     if (ret != ACL_ERROR_NONE) {
         ERROR_LOG("Acl open device %d failed", deviceId_);
